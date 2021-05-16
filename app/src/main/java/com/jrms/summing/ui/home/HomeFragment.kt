@@ -14,11 +14,15 @@ import com.jrms.summing.R
 import com.jrms.summing.adapters.SpendAdapter
 import org.koin.android.ext.android.inject
 import com.jrms.summing.databinding.FragmentHomeBinding
+import com.jrms.summing.models.Spend
+import com.jrms.summing.other.ObtainableData
+import com.jrms.summing.other.SPEND_LIST_EXTRA
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : Fragment(){
 
-    private val homeViewModel: HomeViewModel by inject()
+    private val homeViewModel: HomeViewModel by viewModel()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -39,7 +43,13 @@ class HomeFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel.getSpendList()
+        val list = (requireActivity() as ObtainableData).getData<List<Spend>>(SPEND_LIST_EXTRA)
+        if(savedInstanceState != null || (list?.size ?: 0) == 0){
+            homeViewModel.getSpendList()
+        }else{
+            homeViewModel.spendListLiveData.value = list
+        }
+
     }
 
     private fun openAddSpend(){

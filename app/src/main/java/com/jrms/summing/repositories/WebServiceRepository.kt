@@ -3,7 +3,8 @@ package com.jrms.summing.repositories
 import android.content.Context
 import com.google.gson.GsonBuilder
 import com.jrms.summing.R
-import com.jrms.summing.ws.TransportService
+import com.jrms.summing.ws.AuthenticationService
+import com.jrms.summing.ws.SpendService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -18,7 +19,7 @@ class WebServiceRepository (context : Context){
         .build()
 
 
-    val serviceTransport = retrofit.create(TransportService::class.java)
-
+    val serviceSpend = retrofit.create(SpendService::class.java)
+    val serviceAuthentication = retrofit.create(AuthenticationService::class.java)
 
 }
