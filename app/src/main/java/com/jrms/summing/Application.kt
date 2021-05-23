@@ -7,6 +7,7 @@ import com.jrms.summing.repositories.SpendRepository
 import com.jrms.summing.repositories.WebServiceRepository
 import com.jrms.summing.ui.addSpend.AddSpendViewModel
 import com.jrms.summing.ui.home.HomeViewModel
+import com.jrms.summing.ui.location.LocationViewModel
 import com.jrms.summing.ui.login.LoginViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
@@ -17,6 +18,7 @@ val module = module {
     viewModel { AddSpendViewModel(get(), get()) }
     viewModel { HomeViewModel(get(), get()) }
     viewModel { LoginViewModel(get()) }
+    viewModel { LocationViewModel(get()) }
     single {SpendRepository(get(), get())}
     single { WebServiceRepository(get()) }
     single {SharedPreferencesRepository(get())}

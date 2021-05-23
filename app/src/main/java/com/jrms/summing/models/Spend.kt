@@ -17,7 +17,7 @@ class Spend() : Parcelable{
     @SerializedName("transport")
     var transport : Transport? = null
     @SerializedName("description")
-    val description : String? = null
+    var description : String? = null
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readInt()

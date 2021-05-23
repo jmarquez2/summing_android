@@ -31,5 +31,31 @@
         android:id="@+id/addSpendFragment"
         android:name="com.jrms.summing.ui.addSpend.AddSpendFragment"
         android:label="@string/addSpend"
-        tools:layout="@layout/add_spend_fragment" />
+        tools:layout="@layout/add_spend_fragment" >
+
+        <action
+            android:id="@+id/navigation_location"
+            app:destination="@id/locationFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="com.jrms.summing.ui.location.LocationFragment"
+        android:label="@string/setLocation"
+        tools:layout="@layout/add_spend_fragment" >
+        <argument
+            android:name="latitude"
+            app:argType="string"
+            android:defaultValue="0.0" />
+        <argument
+            android:name="longitude"
+            app:argType="string"
+            android:defaultValue="0.0" />
+        <argument
+            android:name="type"
+            app:argType="boolean"
+            android:defaultValue="true"
+            />
+    </fragment>
 </navigation>

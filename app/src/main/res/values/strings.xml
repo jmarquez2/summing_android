@@ -24,6 +24,15 @@
     <string name="incorrect_password">Incorrect password</string>
     <string name="username">Username</string>
     <string name="login">Login</string>
+    <string name="setLocation">Get location</string>
+    <string name="selectLocation">Select a location</string>
+    <string name="confirm">Confirm</string>
+    <string name="askUseLocation">Use this location?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="setDestination">Select a destination</string>
+    <string name="cannotSaveSpen">Cannot save spend</string>
+    <string name="spentSaved">Spent saved</string>
 
     <array name="spendType">
         <item name="general">General</item>

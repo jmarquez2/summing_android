@@ -1,20 +1,23 @@
 package com.jrms.summing.ui.addSpend
 
+import android.view.View
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 
 
-class AddSpendObservable : BaseObservable() {
+class AddSpendObservable(private val isTransportCall : (Int) -> Boolean) : BaseObservable() {
 
     private var _canUseLocation : Boolean = false
     private var _cost : Double? = null
     private var _description : String? = null
     private var _originText : String?= null
     private var _destinationText : String? = null
+    private var _origin : Pair<Double, Double>? = null
+    private var _destination : Pair<Double, Double>? = null
     private var _reference  : String? = null
-    private var _originLocation : Double = 0.0
-    private var _destinationLocation : Double = 0.0
+    private var _selectedType : Int = 0
+    private var _isValid : Boolean = false
 
     @Bindable
     fun getCost(): Double?{
@@ -25,6 +28,7 @@ class AddSpendObservable : BaseObservable() {
         if(this._cost != cost){
             this._cost = cost
             notifyPropertyChanged(BR.cost)
+            validate()
         }
     }
 
@@ -37,6 +41,7 @@ class AddSpendObservable : BaseObservable() {
         if(description?.equals(_description) == false){
             this._description = description
             notifyPropertyChanged(BR.description)
+            validate()
         }
     }
 
@@ -54,24 +59,58 @@ class AddSpendObservable : BaseObservable() {
         return _originText
     }
 
-    fun setOriginText(origin : String?){
-        if(origin?.equals(_originText) == false){
+    fun getOriginLocation() : Pair<Double, Double>{
+        return _origin!!
+    }
+
+    fun getDestinationLocation() : Pair<Double, Double>{
+        return _destination!!
+    }
+
+    fun setOriginText(location : Pair<Double, Double>?){
+        _origin = location
+        val origin = getLocationString(location)
+        if(origin != _originText){
             _originText = origin
            notifyPropertyChanged(BR.originText)
+            validate()
         }
     }
+
+
 
     @Bindable
     fun getDestinationText() : String?{
         return _destinationText
     }
 
-    fun setDestinationText(destinationText : String?){
-        if(destinationText?.equals(_destinationText) == false){
+    fun setDestinationText(location : Pair<Double, Double>?){
+        _destination = location
+        val destinationText = getLocationString(location)
+        if(destinationText != _destinationText){
             _destinationText = destinationText
             notifyPropertyChanged(BR.destinationText)
+            validate()
         }
     }
+
+    fun setDestinationText(text : String){
+        if(text != _destinationText){
+            _destinationText = text
+            notifyPropertyChanged(BR.destinationText)
+            validate()
+        }
+    }
+
+
+
+    private fun getLocationString(location : Pair<Double, Double>?) : String{
+        val latitude = location?.first ?: 0.0
+        val longitude = location?.second ?: 0.0
+
+        return "$latitude, $longitude"
+    }
+
 
     @Bindable
     fun getReference() : String?{
@@ -82,6 +121,52 @@ class AddSpendObservable : BaseObservable() {
         if(reference?.equals(_reference) == false){
             _reference = reference
             notifyPropertyChanged(BR.reference)
+            validate()
         }
     }
+
+    @Bindable
+    fun getIsTransport() : Boolean{
+        return isTransportCall(_selectedType)
+    }
+
+
+    @Bindable
+    fun getSelectedType() : Int{
+        return _selectedType
+    }
+
+    fun setSelectedType(item : Int){
+        if(_selectedType != item) {
+            _selectedType = item
+            notifyPropertyChanged(BR.selectedType)
+            notifyPropertyChanged(BR.transportVisibility)
+            validate()
+        }
+    }
+
+    @Bindable
+    fun getTransportVisibility() : Int{
+        return if(isTransportCall(getSelectedType())) View.VISIBLE else View.GONE
+    }
+
+    @Bindable
+    fun getIsValid() : Boolean{
+        return _isValid
+    }
+
+    private fun validate(){
+        val valid = _cost ?: 0.0 > 0.0 && _description?.length ?: 0 > 0 && (
+                    if (isTransportCall(getSelectedType()))
+                    _origin != null && _destination != null else true
+                )
+        if(_isValid != valid) {
+            _isValid = valid
+            notifyPropertyChanged(com.jrms.summing.BR.isValid)
+        }
+
+
+    }
+
+
 }

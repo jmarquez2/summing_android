@@ -19,4 +19,8 @@ class SharedPreferencesRepository (private val context : Context){
             this?.apply()
         }
     }
+
+    fun getRequestAuthHeader() :String{
+        return "bearer " + getToken()
+    }
 }

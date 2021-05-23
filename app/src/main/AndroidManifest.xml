@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
+
+
+
     <application
         android:name=".Application"
         android:allowBackup="true"
@@ -15,6 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Summing">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAAvWpWoJBvvHPU8_tCR3_LZ69DZ914uzg" />
+
+
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login" />

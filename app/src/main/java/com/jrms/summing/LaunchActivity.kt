@@ -35,8 +35,10 @@ class LaunchActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<List<Spend>>, response: Response<List<Spend>>) {
                     if(response.code() != 200){
                         intent = Intent(this@LaunchActivity, LoginActivity::class.java)
+                    }else{
+                        intent.putExtra(SPEND_LIST_EXTRA, ArrayList(response.body()))
                     }
-                    intent.putExtra(SPEND_LIST_EXTRA, ArrayList(response.body()))
+
                     startActivity(intent)
                     finish()
                 }
