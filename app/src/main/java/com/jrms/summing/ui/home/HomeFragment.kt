@@ -35,6 +35,7 @@ class HomeFragment : Fragment(){
         bindingFragment.recyclerSpend.layoutManager = LinearLayoutManager(context)
         homeViewModel.spendListLiveData.observe(viewLifecycleOwner, {
             (bindingFragment.recyclerSpend.adapter as SpendAdapter).assignList(it)
+
         })
 
         bindingFragment.viewModel = homeViewModel
@@ -43,13 +44,7 @@ class HomeFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val list = (requireActivity() as ObtainableData).getData<List<Spend>>(SPEND_LIST_EXTRA)
-        if(savedInstanceState != null || (list?.size ?: 0) == 0){
-            homeViewModel.getSpendList()
-        }else{
-            homeViewModel.spendListLiveData.value = list
-        }
-
+        homeViewModel.getSpendList()
     }
 
     private fun openAddSpend(){

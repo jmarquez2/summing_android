@@ -22,7 +22,12 @@ class Spend() : Parcelable{
     constructor(parcel: Parcel) : this() {
         id = parcel.readInt()
         cost = parcel.readDouble()
+        val longDate = parcel.readLong()
+        date = if (longDate == -1L) Date() else Date(longDate)
+        transport = parcel.readParcelable(Transport::class.java.classLoader)
+        description = parcel.readString()
     }
+
 
     fun getType() : String{
         return if (description == null){
@@ -44,6 +49,9 @@ class Spend() : Parcelable{
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeDouble(cost)
+        parcel.writeLong(date.time)
+        parcel.writeParcelable(transport, flags)
+        parcel.writeString(description)
     }
 
     override fun describeContents(): Int {
