@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -23,7 +24,6 @@ import androidx.navigation.fragment.findNavController
 import com.jrms.summing.R
 import com.jrms.summing.databinding.AddSpendFragmentBinding
 import com.jrms.summing.models.Spend
-import com.jrms.summing.models.Transport
 import com.jrms.summing.other.LATITUDE_RESULT
 import com.jrms.summing.other.LOCATION_RESULT_DESTINATION
 import com.jrms.summing.other.LOCATION_RESULT_ORIGIN
@@ -31,7 +31,7 @@ import com.jrms.summing.other.LONGITUDE_RESULT
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class AddSpendFragment : Fragment(), LocationListener{
+class AddSpendFragment : Fragment(), LocationListener {
 
     private val viewModel: AddSpendViewModel by viewModel()
 
@@ -45,7 +45,7 @@ class AddSpendFragment : Fragment(), LocationListener{
         viewModel.spend = Spend()
         viewModel.openLocation = this::goToLocation
 
-        viewModel.returnToPrevious =  {
+        viewModel.returnToPrevious = {
             findNavController().navigateUp()
         }
 
@@ -53,13 +53,19 @@ class AddSpendFragment : Fragment(), LocationListener{
         binding.costValue.doOnTextChanged { _, _, _, _ ->
             binding.costValue.setSelection(binding.costValue.text?.toString()?.length ?: 0)
         }
-        setFragmentResultListener(LOCATION_RESULT_ORIGIN){ _, bundle ->
-            viewModel.setOriginLocation(bundle.getDouble(LATITUDE_RESULT), bundle.getDouble(
-                LONGITUDE_RESULT))
+        setFragmentResultListener(LOCATION_RESULT_ORIGIN) { _, bundle ->
+            viewModel.setOriginLocation(
+                bundle.getDouble(LATITUDE_RESULT), bundle.getDouble(
+                    LONGITUDE_RESULT
+                )
+            )
         }
-        setFragmentResultListener(LOCATION_RESULT_DESTINATION){ _, bundle ->
-            viewModel.setDestinationLocation(bundle.getDouble(LATITUDE_RESULT), bundle.getDouble(
-                LONGITUDE_RESULT))
+        setFragmentResultListener(LOCATION_RESULT_DESTINATION) { _, bundle ->
+            viewModel.setDestinationLocation(
+                bundle.getDouble(LATITUDE_RESULT), bundle.getDouble(
+                    LONGITUDE_RESULT
+                )
+            )
         }
 
         return binding.root
@@ -79,32 +85,23 @@ class AddSpendFragment : Fragment(), LocationListener{
 
             }
             else -> {
-                requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), 22
-                )
+                registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){granted ->
+                    getLocation(granted.values.all {
+                        it == true
+                    })
+                }.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION))
+
             }
         }
 
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-
-            22 -> {
-                getLocation(grantResults.isNotEmpty() &&
-                        grantResults[0] == PERMISSION_GRANTED)
-            }
-        }
-    }
-
-    private fun getLocation(canGet: Boolean){
-        if(canGet){
+    private fun getLocation(canGet: Boolean) {
+        if (canGet) {
             viewModel.addSpendObservable.setCanUseLocation(true)
-            val locationManager = requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
+            val locationManager =
+                requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager
             if (ActivityCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.ACCESS_COARSE_LOCATION
@@ -114,8 +111,9 @@ class AddSpendFragment : Fragment(), LocationListener{
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) == PERMISSION_GRANTED
             ) {
+
                 setLocation(locationManager.getLastKnownLocation(NETWORK_PROVIDER))
-                locationManager.requestLocationUpdates(GPS_PROVIDER, 0,0f, this)
+                locationManager.requestLocationUpdates(GPS_PROVIDER, 0, 0f, this)
 
             }
 
@@ -126,19 +124,33 @@ class AddSpendFragment : Fragment(), LocationListener{
         viewModel.currentLocation = location
     }
 
-    private fun goToLocation(isOrigin : Boolean) {
-        val location = if(isOrigin) viewModel.getOriginLocation() else
+    override fun onProviderDisabled(provider: String) {
+
+    }
+
+    override fun onProviderEnabled(provider: String) {
+
+    }
+
+
+
+    private fun goToLocation(isOrigin: Boolean) {
+        val location = if (isOrigin) viewModel.getOriginLocation() else
             viewModel.getDestinationLocation()
-        val locationArgs = bundleOf("latitude" to location.first.toString(),
-            "longitude" to location.second.toString(), "type" to isOrigin)
+        val locationArgs = bundleOf(
+            "latitude" to location.first.toString(),
+            "longitude" to location.second.toString(), "type" to isOrigin
+        )
         view?.findNavController()?.navigate(R.id.navigation_location, locationArgs)
 
     }
 
-    private fun setLocation(location : Location?){
+    private fun setLocation(location: Location?) {
         viewModel.currentLocation = location
-        viewModel.setOriginLocation(viewModel.currentLocation?.latitude ?: 0.0,
-            viewModel.currentLocation?.longitude ?: 0.0)
+        viewModel.setOriginLocation(
+            viewModel.currentLocation?.latitude ?: 0.0,
+            viewModel.currentLocation?.longitude ?: 0.0
+        )
 
     }
 

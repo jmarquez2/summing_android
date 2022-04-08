@@ -33,10 +33,10 @@ class HomeFragment : Fragment(){
         homeViewModel.openAddSpend = this::openAddSpend
         bindingFragment.recyclerSpend.adapter = SpendAdapter(listOf())
         bindingFragment.recyclerSpend.layoutManager = LinearLayoutManager(context)
-        homeViewModel.spendListLiveData.observe(viewLifecycleOwner, {
+        homeViewModel.spendListLiveData.observe(viewLifecycleOwner) {
             (bindingFragment.recyclerSpend.adapter as SpendAdapter).assignList(it)
 
-        })
+        }
 
         bindingFragment.viewModel = homeViewModel
         return bindingFragment.root
