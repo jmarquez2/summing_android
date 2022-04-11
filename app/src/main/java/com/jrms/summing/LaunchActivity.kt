@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.jrms.summing.models.Spend
 import com.jrms.summing.other.SPEND_LIST_EXTRA
-import com.jrms.summing.repositories.LoginRepository
 import com.jrms.summing.repositories.SharedPreferencesRepository
 import com.jrms.summing.repositories.SpendRepository
 import com.jrms.summing.ui.login.LoginActivity

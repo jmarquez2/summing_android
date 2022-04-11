@@ -10,8 +10,8 @@ import retrofit2.Call
  * maintains an in-memory cache of login status and user credentials information.
  */
 
-class LoginRepository(private val webServiceRepository: WebServiceRepository,
-                     private val sharedPreferencesRepository: SharedPreferencesRepository) {
+class SessionRepository(private val webServiceRepository: WebServiceRepository,
+                        private val sharedPreferencesRepository: SharedPreferencesRepository) {
 
     fun logout() {
         sharedPreferencesRepository.setToken(null)
@@ -21,7 +21,7 @@ class LoginRepository(private val webServiceRepository: WebServiceRepository,
         return webServiceRepository.serviceAuthentication.login(User(username, password))
     }
 
-    fun setToken(token : String?){
+    fun setToken(token : String){
         sharedPreferencesRepository.setToken(token)
     }
 

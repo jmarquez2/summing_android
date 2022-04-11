@@ -33,6 +33,8 @@
     <string name="setDestination">Select a destination</string>
     <string name="cannotSaveSpen">Cannot save spend</string>
     <string name="spentSaved">Spent saved</string>
+    <string name="logout">Log out</string>
+    <string name="login_message">Please provide the information below</string>
 
     <array name="spendType">
         <item name="general">General</item>

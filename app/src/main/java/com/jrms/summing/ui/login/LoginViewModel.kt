@@ -4,17 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
-import android.widget.Toast
-import com.jrms.summing.repositories.LoginRepository
+import com.jrms.summing.repositories.SessionRepository
 
 import com.jrms.summing.R
-import com.jrms.summing.models.ResponseWS
 import com.jrms.summing.models.Token
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel(private val sessionRepository: SessionRepository) : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -24,11 +22,11 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     fun login(username: String, password: String) {
 
-        loginRepository.login(username, password).enqueue(object : Callback<Token>{
+        sessionRepository.login(username, password).enqueue(object : Callback<Token>{
             override fun onResponse(call: Call<Token>, response: Response<Token>) {
                 when {
                     response.code() == 200 -> {
-                        loginRepository.setToken(response.body()?.token)
+                        sessionRepository.setToken(response.body()!!.token!!)
                         _loginResult.value = LoginResult(LoggedInUserView(displayName = username), null)
                     }
                     response.code() == 404 -> {
