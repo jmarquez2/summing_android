@@ -35,6 +35,9 @@
     <string name="spentSaved">Spent saved</string>
     <string name="logout">Log out</string>
     <string name="login_message">Please provide the information below</string>
+    <string name="title_spend">Spends</string>
+    <string name="deleteSpend">Delete spend</string>
+    <string name="spendSelection">Spend selection</string>
 
     <array name="spendType">
         <item name="general">General</item>

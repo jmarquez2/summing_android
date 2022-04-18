@@ -7,7 +7,7 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Spend() : Parcelable{
+open class Spend() : Parcelable{
     @SerializedName("id")
     var id : Int = 0
     @SerializedName("cost")

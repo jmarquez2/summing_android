@@ -14,8 +14,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class HomeViewModel(application: Application,
-                    private val spendRepository: SpendRepository) : AndroidViewModel(application) {
+class SpendViewModel(application: Application,
+                     private val spendRepository: SpendRepository) : AndroidViewModel(application) {
 
     lateinit var openAddSpend : () -> Unit
 

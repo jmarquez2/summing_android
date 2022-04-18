@@ -30,12 +30,12 @@
 
         <activity
             android:name=".ui.login.LoginActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+            android:theme="@style/Theme.SummingNoActionBar"
             android:label="@string/title_activity_login" />
         <activity
             android:exported="true"
             android:name=".LaunchActivity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+            android:theme="@style/Theme.SummingNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

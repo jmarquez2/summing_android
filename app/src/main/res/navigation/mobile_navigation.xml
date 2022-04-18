@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.jrms.summing.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" >
+        android:name="com.jrms.summing.ui.home.SpendFragment"
+        android:label="@string/title_spend"
+        tools:layout="@layout/fragment_spend" >
 
         <action
             android:id="@+id/navigation_addSpend"

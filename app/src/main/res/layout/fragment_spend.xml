@@ -8,20 +8,32 @@
     <data>
         <variable
             name="viewModel"
-            type="com.jrms.summing.ui.home.HomeViewModel" />
+            type="com.jrms.summing.ui.home.SpendViewModel" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+        tools:context=".ui.home.SpendFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="5dp"
-            android:id="@+id/recyclerSpend"
-            tools:listitem="@layout/spend_item"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/recyclerSpend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                tools:listitem="@layout/spend_item" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
