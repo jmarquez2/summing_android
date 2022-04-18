@@ -15,7 +15,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:background="@{spend.selected ? @android:color/darker_gray : @android:color/transparent}"
+        android:foreground="@{spend.selected ? @color/gray_selected : @android:color/transparent}"
         android:layout_margin="10dp"
         android:clickable="true"
         android:focusable="true"

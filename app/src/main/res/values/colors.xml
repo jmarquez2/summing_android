@@ -15,5 +15,7 @@
     <color name="blue_mat2">#01579B</color>
     <color name="blue_mat3">#1E88E5</color>
 
+    <color name="gray_selected">#CCDDDDDD</color>
+
     <color name="textColor">#000000</color>
 </resources>
