@@ -5,6 +5,7 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.util.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jrms.summing.R
@@ -15,13 +16,13 @@ import com.jrms.summing.other.SpendView
 import com.jrms.summing.other.ViewCallback
 
 class SpendAdapter(
-    var list: List<Spend>, private val actionClick: () -> Unit,
+    private val actionClick: () -> Unit,
     private val isActionMenuActive: () -> Boolean,
     private val cancelAction: () -> Unit
 ) :
     RecyclerView.Adapter<SpendAdapter.SpendViewHolder>(), SpendItemsOption {
 
-
+    private var list: ArrayList<Spend> = ArrayList()
     private val sparseArray: SparseArray<Boolean> = SparseArray()
 
 
@@ -38,7 +39,7 @@ class SpendAdapter(
     }
 
     fun assignList(list: List<Spend>) {
-        this.list = list
+        this.list.addAll(list)
         notifyItemRangeChanged(0, list.size)
     }
 
@@ -70,6 +71,23 @@ class SpendAdapter(
         sparseArray.clear()
         notifyItemRangeChanged(0, list.size)
 
+    }
+
+    fun getSelections() : String{
+        val stringBuilder = StringBuilder()
+        sparseArray.forEach { key, value ->
+            if(value){
+                stringBuilder.append(",").append(list[key].id)
+            }
+        }
+        return stringBuilder.toString().trim(',')
+    }
+
+    fun clearData(){
+        val count = list.size
+        list.clear()
+        sparseArray.clear()
+        notifyItemRangeRemoved(0, count)
     }
 
 

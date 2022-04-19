@@ -17,5 +17,10 @@ class SpendRepository (private val wsRepository : WebServiceRepository,
             sharedPreferencesRepository.getRequestAuthHeader())
     }
 
+    fun deleteSpends(spends : String) : Call<ResponseWS>{
+        return wsRepository.serviceSpend.deleteSpends(spends,
+        sharedPreferencesRepository.getRequestAuthHeader())
+    }
+
 
 }

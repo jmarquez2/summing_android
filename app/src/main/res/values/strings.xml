@@ -38,6 +38,8 @@
     <string name="title_spend">Spends</string>
     <string name="deleteSpend">Delete spend</string>
     <string name="spendSelection">Spend selection</string>
+    <string name="spendsDeleted">Spends selected have been deleted</string>
+    <string name="errorDeletingSpends">There was an error when trying to delete selected spends</string>
 
     <array name="spendType">
         <item name="general">General</item>

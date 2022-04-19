@@ -16,4 +16,8 @@ interface SpendService {
     @POST("spend")
     fun saveNewSpend(@Body spend: Spend,
                      @Header(AUTHORIZATION_HEADER) authentication : String): Call<ResponseWS>
+
+    @DELETE("spend")
+    fun deleteSpends(@Query("ids") ids : String,
+                     @Header(AUTHORIZATION_HEADER) authentication: String) : Call<ResponseWS>
 }
