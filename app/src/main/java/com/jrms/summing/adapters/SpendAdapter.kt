@@ -38,8 +38,8 @@ class SpendAdapter(
         holder.bind(position, list[position])
     }
 
-    fun assignList(list: List<Spend>) {
-        this.list.addAll(list)
+    fun assignList(list : ArrayList<Spend>) {
+        this.list = list
         notifyItemRangeChanged(0, this.list.size)
     }
 

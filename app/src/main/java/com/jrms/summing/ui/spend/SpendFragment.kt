@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jrms.summing.R
@@ -14,7 +15,7 @@ import com.jrms.summing.models.Spend
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class SpendFragment : Fragment(), ActionMode.Callback {
+class SpendFragment : Fragment(), ActionMode.Callback, EventCalls {
 
     private val spendViewModel: SpendViewModel by viewModel()
     private var actionMode: ActionMode? = null
@@ -29,30 +30,20 @@ class SpendFragment : Fragment(), ActionMode.Callback {
     ): View {
         bindingFragment = FragmentSpendBinding.inflate(inflater,
             container, false)
-        spendViewModel.callbacks = object : SpendCallbacks{
-            override fun openAddSpend() {
-                this@SpendFragment.openAddSpend()
-            }
 
-            override fun addToList(list: List<Spend>) {
-                (bindingFragment?.recyclerSpend?.adapter as SpendAdapter?)?.assignList(list)
-            }
-
-            override fun clearData() {
-                this@SpendFragment.removeSpendData()
-            }
-
-        }
         spendAdapter = SpendAdapter(this::actionContext,
             this::isActionModeActive, this::cancelAction)
         bindingFragment?.recyclerSpend?.adapter = spendAdapter
         bindingFragment?.recyclerSpend?.layoutManager = LinearLayoutManager(context)
 
-
+        spendViewModel.spendListLiveData.observe(viewLifecycleOwner){
+            spendAdapter?.assignList(it)
+        }
 
         bindingFragment?.refreshSpend?.setOnRefreshListener {
             reloadSpendList()
         }
+
 
         bindingFragment?.recyclerSpend?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
@@ -70,13 +61,23 @@ class SpendFragment : Fragment(), ActionMode.Callback {
             }
         })
 
-        spendViewModel.spendListLiveData.observe(viewLifecycleOwner) {
-            //(bindingFragment?.recyclerSpend?.adapter as SpendAdapter?)?.assignList(it)
 
-        }
 
-        bindingFragment?.viewModel = spendViewModel
+
+        bindingFragment?.eventCalls = this
         return bindingFragment?.root!!
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        findNavController().currentBackStackEntry?.savedStateHandle?.
+        getLiveData<Boolean>("savedSpend")?.observe(viewLifecycleOwner){
+            if(it){
+                spendViewModel.getSpendList(true)
+            }
+        }
+        findNavController().currentBackStackEntry?.
+            savedStateHandle?.remove<Boolean>("savedSpend")
     }
 
     private fun removeSpendData(){
@@ -104,13 +105,9 @@ class SpendFragment : Fragment(), ActionMode.Callback {
         actionMode = null
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        reloadSpendList()
-    }
 
-    private fun openAddSpend() {
-        view?.findNavController()?.navigate(R.id.navigation_addSpend)
+    override fun openAddSpend(view: View) {
+        findNavController().navigate(R.id.navigation_addSpend)
     }
 
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {

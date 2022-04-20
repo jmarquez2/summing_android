@@ -46,6 +46,7 @@ class AddSpendFragment : Fragment(), LocationListener {
         viewModel.openLocation = this::goToLocation
 
         viewModel.returnToPrevious = {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("savedSpend", true)
             findNavController().navigateUp()
         }
 
