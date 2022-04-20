@@ -1,4 +1,4 @@
-package com.jrms.summing.ui.home
+package com.jrms.summing.ui.spend
 
 import android.app.Application
 import android.view.View
@@ -9,7 +9,6 @@ import com.jrms.summing.R
 import com.jrms.summing.models.ResponseWS
 import com.jrms.summing.models.Spend
 import com.jrms.summing.repositories.SpendRepository
-import com.jrms.summing.repositories.WebServiceRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,7 +17,7 @@ import retrofit2.Response
 class SpendViewModel(application: Application,
                      private val spendRepository: SpendRepository) : AndroidViewModel(application) {
 
-    lateinit var openAddSpend : () -> Unit
+    lateinit var callbacks : SpendCallbacks
     private val limit = 20
     private var offset = 0
     private var loading = false
@@ -27,7 +26,7 @@ class SpendViewModel(application: Application,
 
 
     fun clickFabAdd(view : View){
-        openAddSpend()
+        callbacks.openAddSpend()
     }
 
 
@@ -43,7 +42,7 @@ class SpendViewModel(application: Application,
                     if (response.body() != null){
                         val result : List<Spend> = response.body() as List<Spend>
                         if(result.count() > 0){
-                            spendListLiveData.value = response.body()
+                            callbacks.addToList(response.body() as List<Spend>)
                             this@SpendViewModel.offset += this@SpendViewModel.limit
                         }
                         afterLoading?.invoke()
@@ -67,7 +66,12 @@ class SpendViewModel(application: Application,
     fun deleteSelection(spends : String, successCallback : () -> Unit, errorCallback : () -> Unit) {
         spendRepository.deleteSpends(spends).enqueue(object : Callback<ResponseWS>{
             override fun onResponse(call: Call<ResponseWS>, response: Response<ResponseWS>) {
-                successCallback()
+                if(response.code() != 200){
+                    errorCallback()
+                }else{
+                    successCallback()
+                }
+
             }
 
             override fun onFailure(call: Call<ResponseWS>, t: Throwable) {

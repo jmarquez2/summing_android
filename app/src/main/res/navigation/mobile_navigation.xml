@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.jrms.summing.ui.home.SpendFragment"
+        android:name="com.jrms.summing.ui.spend.SpendFragment"
         android:label="@string/title_spend"
         tools:layout="@layout/fragment_spend" >
 

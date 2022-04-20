@@ -40,7 +40,7 @@ class SpendAdapter(
 
     fun assignList(list: List<Spend>) {
         this.list.addAll(list)
-        notifyItemRangeChanged(0, list.size)
+        notifyItemRangeChanged(0, this.list.size)
     }
 
     override fun getItemCount(): Int {

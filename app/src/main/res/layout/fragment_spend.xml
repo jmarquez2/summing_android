@@ -8,12 +8,12 @@
     <data>
         <variable
             name="viewModel"
-            type="com.jrms.summing.ui.home.SpendViewModel" />
+            type="com.jrms.summing.ui.spend.SpendViewModel" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.SpendFragment">
+        tools:context=".ui.spend.SpendFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
