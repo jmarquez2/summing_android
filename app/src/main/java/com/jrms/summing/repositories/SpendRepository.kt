@@ -7,17 +7,17 @@ import retrofit2.Call
 class SpendRepository (private val wsRepository : WebServiceRepository,
                        private val sharedPreferencesRepository: SharedPreferencesRepository) {
 
-    fun getSpendList(limit : Int = 20, offset : Int = 0) : Call<List<Spend>>{
+    suspend fun getSpendList(limit : Int = 20, offset : Int = 0) : List<Spend>{
         return wsRepository.serviceSpend.getSpendList(limit, offset,
             sharedPreferencesRepository.getRequestAuthHeader())
     }
 
-    fun saveSpend(spend :Spend) : Call<ResponseWS>{
+    suspend fun saveSpend(spend :Spend) : ResponseWS{
         return wsRepository.serviceSpend.saveNewSpend(spend,
             sharedPreferencesRepository.getRequestAuthHeader())
     }
 
-    fun deleteSpends(spends : String) : Call<ResponseWS>{
+    suspend fun deleteSpends(spends : String) : ResponseWS{
         return wsRepository.serviceSpend.deleteSpends(spends,
         sharedPreferencesRepository.getRequestAuthHeader())
     }

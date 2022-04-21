@@ -1,16 +1,21 @@
 package com.jrms.summing.ui.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import androidx.lifecycle.viewModelScope
 import com.jrms.summing.repositories.SessionRepository
 
 import com.jrms.summing.R
 import com.jrms.summing.models.Token
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.HttpException
 import retrofit2.Response
+import java.lang.Exception
 
 class LoginViewModel(private val sessionRepository: SessionRepository) : ViewModel() {
 
@@ -22,28 +27,21 @@ class LoginViewModel(private val sessionRepository: SessionRepository) : ViewMod
 
     fun login(username: String, password: String) {
 
-        sessionRepository.login(username, password).enqueue(object : Callback<Token>{
-            override fun onResponse(call: Call<Token>, response: Response<Token>) {
-                when {
-                    response.code() == 200 -> {
-                        sessionRepository.setToken(response.body()!!.token!!)
-                        _loginResult.value = LoginResult(LoggedInUserView(displayName = username), null)
-                    }
-                    response.code() == 404 -> {
-                        _loginResult.value = LoginResult(null, R.string.user_not_found)
-                    }
-                    else -> {
-                        _loginResult.value = LoginResult(null, R.string.incorrect_password)
-                    }
-                }
+        viewModelScope.launch {
+            try {
+                val token = sessionRepository.login(username, password)
+                sessionRepository.setToken(token.token!!)
+                _loginResult.value = LoginResult(LoggedInUserView(displayName = username), null)
+            }catch (httpException : HttpException){
+                Log.e("Login", "Error logging in",httpException)
+                _loginResult.value = LoginResult(null, R.string.user_password_incorrect)
 
-            }
-
-            override fun onFailure(call: Call<Token>, t: Throwable) {
+            }catch (e : Exception){
+                Log.e("Login", "Error logging in",e)
                 _loginResult.value = LoginResult(null, R.string.login_failed)
             }
+        }
 
-        })
     }
 
     fun loginDataChanged(username: String, password: String) {

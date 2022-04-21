@@ -17,12 +17,17 @@ class SessionRepository(private val webServiceRepository: WebServiceRepository,
         sharedPreferencesRepository.setToken(null)
     }
 
-    fun login(username: String, password: String) : Call<Token>{
+    suspend fun login(username: String, password: String) : Token{
         return webServiceRepository.serviceAuthentication.login(User(username, password))
     }
 
     fun setToken(token : String){
         sharedPreferencesRepository.setToken(token)
+    }
+
+    suspend fun login() : ResponseWS{
+        return webServiceRepository.serviceAuthentication.login(sharedPreferencesRepository
+            .getRequestAuthHeader())
     }
 
 }

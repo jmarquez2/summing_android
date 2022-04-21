@@ -1,18 +1,23 @@
 package com.jrms.summing.ui.spend
 
 import android.app.Application
-import android.view.View
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.jrms.summing.R
 import com.jrms.summing.models.ResponseWS
 import com.jrms.summing.models.Spend
 import com.jrms.summing.repositories.SpendRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 
 class SpendViewModel(
@@ -22,70 +27,71 @@ class SpendViewModel(
 
     private val limit = 20
     private var offset = 0
-    private var loading = false
-    private val spends : ArrayList<Spend> = ArrayList()
+    private val spends: ArrayList<Spend> = ArrayList()
+
+
+    private val _loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val spendListLiveData by lazy { MutableLiveData<ArrayList<Spend>>() }
+
+
+    private var isLoading = false
+
+    val loadingLiveData: LiveData<Boolean>
+        get() {
+            return _loading
+        }
 
     init {
         getSpendList()
     }
 
-    val spendListLiveData by lazy { MutableLiveData<ArrayList<Spend>>() }
+    private fun loading(value: Boolean) {
+        isLoading = value
+        _loading.postValue(isLoading)
 
+    }
 
-    fun getSpendList(reset: Boolean = false, afterLoading: (() -> Unit)? = null) {
-        if (!loading) {
-            loading = true
+    fun getSpendList(reset: Boolean = false) {
+        if (!isLoading) {
+            loading(true)
             if (reset) {
                 spends.clear()
                 this.offset = 0
             }
 
-            spendRepository.getSpendList(this.limit, this.offset)
-                .enqueue(object : Callback<List<Spend>> {
-                    override fun onResponse(
-                        call: Call<List<Spend>>,
-                        response: Response<List<Spend>>,
-                    ) {
-                        if (response.body() != null) {
-                            val result: List<Spend> = response.body() as List<Spend>
-                            if (result.count() > 0) {
-                                spends.addAll(result)
-                                spendListLiveData.postValue(spends)
-                                this@SpendViewModel.offset += this@SpendViewModel.limit
-                            }
-                            afterLoading?.invoke()
-                            loading = false
-                        }
+            viewModelScope.launch(Dispatchers.IO) {
+
+                try {
+                    val result: List<Spend> = spendRepository.getSpendList(limit, offset)
+                    if (result.count() > 0) {
+                        spends.addAll(result)
+                        spendListLiveData.postValue(spends)
+                        this@SpendViewModel.offset += this@SpendViewModel.limit
                     }
-
-                    override fun onFailure(call: Call<List<Spend>>, t: Throwable) {
-                        Toast.makeText(getApplication(), R.string.errorMessageWS,
-                            Toast.LENGTH_SHORT).show()
-
-                        afterLoading?.invoke()
-                        loading = false
-                    }
-
-                })
-        }
-
-    }
-
-    fun deleteSelection(spends: String, successCallback: () -> Unit, errorCallback: () -> Unit) {
-        spendRepository.deleteSpends(spends).enqueue(object : Callback<ResponseWS> {
-            override fun onResponse(call: Call<ResponseWS>, response: Response<ResponseWS>) {
-                if (response.code() != 200) {
-                    errorCallback()
-                } else {
-                    successCallback()
+                } catch (e: Exception) {
+                    Toast.makeText(getApplication(), R.string.errorMessageWS,
+                        Toast.LENGTH_SHORT).show()
+                } finally {
+                    loading(false)
                 }
 
             }
 
-            override fun onFailure(call: Call<ResponseWS>, t: Throwable) {
-                errorCallback()
-            }
+        }
 
-        })
+    }
+
+    suspend fun deleteSelections(
+        spends: String
+    ) : Boolean {
+
+        try {
+            val result = spendRepository.deleteSpends(spends)
+            Log.w("Delete selection", result.message ?: "Empty message")
+            return true
+        } catch (e: Exception) {
+            Log.e("Delete selection", "Error", e)
+            return false
+        }
     }
 }

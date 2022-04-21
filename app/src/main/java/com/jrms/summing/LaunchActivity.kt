@@ -1,22 +1,20 @@
 package com.jrms.summing
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.jrms.summing.models.Spend
-import com.jrms.summing.other.SPEND_LIST_EXTRA
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.jrms.summing.repositories.SessionRepository
 import com.jrms.summing.repositories.SharedPreferencesRepository
-import com.jrms.summing.repositories.SpendRepository
 import com.jrms.summing.ui.login.LoginActivity
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LaunchActivity : AppCompatActivity() {
 
     private val sharedPreferencesRepository : SharedPreferencesRepository by inject()
-    private val spendRepository : SpendRepository by inject()
+    private val sessionRepository : SessionRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,24 +28,20 @@ class LaunchActivity : AppCompatActivity() {
 
         }else{
             intent = Intent(this, MainActivity::class.java)
-            spendRepository.getSpendList().enqueue(object : Callback<List<Spend>>{
-                override fun onResponse(call: Call<List<Spend>>, response: Response<List<Spend>>) {
-                    if(response.code() != 200){
-                        intent = Intent(this@LaunchActivity, LoginActivity::class.java)
-                    }else{
-                        intent.putExtra(SPEND_LIST_EXTRA, ArrayList(response.body()!!))
-                    }
+            lifecycleScope.launch{
+                try {
+                    val result = sessionRepository.login()
+                    Log.w("Result", result.message ?: "Empty")
+                }catch (e : Exception){
+                    Log.e("loginError", e.toString())
+                    intent = Intent(this@LaunchActivity, LoginActivity::class.java)
 
+                }finally {
                     startActivity(intent)
                     finish()
                 }
+            }
 
-                override fun onFailure(call: Call<List<Spend>>, t: Throwable) {
-                    startActivity(intent)
-                    finish()
-                }
-
-            })
         }
 
     }
