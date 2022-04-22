@@ -4,6 +4,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="addSpend">Add spend</string>
+    <string name="spendDetails">Spend details</string>
     <string name="saveSpend">Save spend</string>
     <string name="cost">Cost</string>
     <string name="date">Date</string>
@@ -45,4 +46,13 @@
         <item name="general">General</item>
         <item name="transport">Transport</item>
     </array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="spend_type">Spend type</string>
+    <string name="useLocation">Use location</string>
+    <string name="destination">Destination</string>
+    <string name="origin">Origin</string>
+    <string name="askSpendType">Please select the spend type</string>
+    <string name="generic">Generic</string>
+    <string name="transport">Transport</string>
 </resources>

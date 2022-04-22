@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.jrms.summing.ui.addSpend.AddSpendViewModel" />
+            type="com.jrms.summing.ui.spend.detail.SpendDataViewModel" />
         <import type="com.jrms.summing.other.Converter"/>
         <import type="android.view.View"/>
     </data>
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="25dp"
-            tools:context=".ui.addSpend.AddSpendFragment">
+            tools:context=".ui.spend.detail.SpendDetailFragment">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layoutCost"

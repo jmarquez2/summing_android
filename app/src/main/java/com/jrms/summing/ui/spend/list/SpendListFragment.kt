@@ -1,25 +1,23 @@
-package com.jrms.summing.ui.spend
+package com.jrms.summing.ui.spend.list
 
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jrms.summing.R
 import com.jrms.summing.adapters.SpendAdapter
 import com.jrms.summing.databinding.FragmentSpendBinding
-import com.jrms.summing.models.Spend
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class SpendFragment : Fragment(), ActionMode.Callback, EventCalls {
+class SpendListFragment : Fragment(), ActionMode.Callback, EventCalls {
 
-    private val spendViewModel: SpendViewModel by viewModel()
+    private val spendListViewModel: SpendListViewModel by viewModel()
     private var actionMode: ActionMode? = null
     private var spendAdapter: SpendAdapter? = null
     private var bindingFragment: FragmentSpendBinding? = null
@@ -38,7 +36,7 @@ class SpendFragment : Fragment(), ActionMode.Callback, EventCalls {
         bindingFragment?.recyclerSpend?.adapter = spendAdapter
         bindingFragment?.recyclerSpend?.layoutManager = LinearLayoutManager(context)
 
-        spendViewModel.spendListLiveData.observe(viewLifecycleOwner) {
+        spendListViewModel.spendListLiveData.observe(viewLifecycleOwner) {
             spendAdapter?.assignList(it)
         }
 
@@ -46,7 +44,7 @@ class SpendFragment : Fragment(), ActionMode.Callback, EventCalls {
             reloadSpendList()
         }
 
-        spendViewModel.loadingLiveData.observe(viewLifecycleOwner) {
+        spendListViewModel.loadingLiveData.observe(viewLifecycleOwner) {
             bindingFragment?.refreshSpend?.isRefreshing = it
         }
 
@@ -60,7 +58,7 @@ class SpendFragment : Fragment(), ActionMode.Callback, EventCalls {
                 if ((bindingFragment?.recyclerSpend?.layoutManager as LinearLayoutManager?)?.findLastCompletelyVisibleItemPosition() == (spendAdapter?.itemCount
                         ?: 1) - 1
                 ) {
-                    spendViewModel.getSpendList()
+                    spendListViewModel.getSpendList()
                 }
             }
         })
@@ -75,7 +73,7 @@ class SpendFragment : Fragment(), ActionMode.Callback, EventCalls {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("savedSpend")
             ?.observe(viewLifecycleOwner) {
                 if (it) {
-                    spendViewModel.getSpendList(true)
+                    spendListViewModel.getSpendList(true)
                 }
             }
         findNavController().currentBackStackEntry?.savedStateHandle?.remove<Boolean>("savedSpend")
@@ -88,7 +86,7 @@ class SpendFragment : Fragment(), ActionMode.Callback, EventCalls {
 
     private fun reloadSpendList() {
         removeSpendData()
-        spendViewModel.getSpendList(true)
+        spendListViewModel.getSpendList(true)
     }
 
     private fun actionContext() {
@@ -125,7 +123,7 @@ class SpendFragment : Fragment(), ActionMode.Callback, EventCalls {
                 val selections = spendAdapter?.getSelections()
                 if (selections != null) {
                     lifecycleScope.launch {
-                        if (spendViewModel.deleteSelections(selections)) {
+                        if (spendListViewModel.deleteSelections(selections)) {
                             Toast.makeText(context, R.string.spendsDeleted, Toast.LENGTH_SHORT)
                                 .show()
                             actionMode?.finish()

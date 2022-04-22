@@ -9,8 +9,14 @@
         <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/activity_login.xml" value="0.358695652173913" />
         <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/add_spend_fragment.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/fragment_ask_use_location.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/fragment_destination_location.xml" value="0.358695652173913" />
         <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/fragment_home.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/fragment_spend.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/fragment_spend_description.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/fragment_spend_quantity.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/fragment_spend_type.xml" value="0.22" />
+        <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/spend_detail_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/layout/spend_item.xml" value="0.358695652173913" />
         <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/menu/action_menu_options.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/JR/Documents/summing_android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />

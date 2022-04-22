@@ -1,4 +1,4 @@
-package com.jrms.summing.ui.spend
+package com.jrms.summing.ui.spend.list
 
 import android.view.View
 

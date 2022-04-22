@@ -7,13 +7,16 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.jrms.summing.ui.spend.SpendFragment"
+        android:name="com.jrms.summing.ui.spend.list.SpendListFragment"
         android:label="@string/title_spend"
-        tools:layout="@layout/fragment_spend" >
+        tools:layout="@layout/fragment_spend">
 
         <action
             android:id="@+id/navigation_addSpend"
-            app:destination="@id/addSpendFragment" />
+            app:destination="@id/navigation_type_spend_fragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_spend_details_fragment"
+            app:destination="@id/navigation_spend_details_fragment" />
     </fragment>
 
     <fragment
@@ -27,35 +30,109 @@
         android:name="com.jrms.summing.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
     <fragment
-        android:id="@+id/addSpendFragment"
-        android:name="com.jrms.summing.ui.addSpend.AddSpendFragment"
-        android:label="@string/addSpend"
-        tools:layout="@layout/add_spend_fragment" >
+        android:id="@+id/navigation_type_spend_fragment"
+        android:name="com.jrms.summing.ui.spend.detail.type.SpendTypeFragment"
+        android:label="@string/spend_type"
+        tools:layout="@layout/fragment_spend_type">
+        <action
+            android:id="@+id/action_navigation_cost_spend_fragment"
+            app:destination="@id/navigation_cost_spend_fragment" />
 
         <action
-            android:id="@+id/navigation_location"
-            app:destination="@id/locationFragment"
-            />
+            android:id="@+id/action_navigation_ask_user_location_fragment"
+            app:destination="@id/navigation_ask_user_location_fragment" />
+        <action
+            android:id="@+id/action_navigation_origin_fragment"
+            app:destination="@id/navigation_origin_fragment" />
+
+
     </fragment>
+
+    <fragment android:id="@+id/navigation_destination_fragment"
+        android:name="com.jrms.summing.ui.spend.detail.location.DestinationLocationFragment"
+        android:label="@string/destination"
+        tools:layout="@layout/fragment_destination_location"
+        >
+        <action
+            android:id="@+id/action_navigation_destination_fragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
+        <action
+            android:id="@+id/action_navigation_destination_fragment_to_navigation_cost_spend_fragment"
+            app:destination="@id/navigation_cost_spend_fragment" />
+    </fragment>
+
+    <fragment android:id="@+id/navigation_origin_fragment"
+        android:name="com.jrms.summing.ui.spend.detail.location.OriginLocationFragment"
+        android:label="@string/origin"
+        tools:layout="@layout/fragment_origin_location"
+
+        >
+        <action
+            android:id="@+id/action_navigation_origin_fragment_to_navigation_destination_fragment"
+            app:destination="@id/navigation_destination_fragment" />
+        <action
+            android:id="@+id/action_navigation_origin_fragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_ask_user_location_fragment"
+        android:label="@string/useLocation"
+        android:name="com.jrms.summing.ui.spend.detail.location.AskUseLocationFragment"
+        tools:layout="@layout/fragment_ask_use_location" >
+
+        <action
+            android:id="@+id/action_navigation_ask_user_location_fragment_to_navigation_origin_fragment"
+            app:destination="@id/navigation_origin_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_cost_spend_fragment"
+        android:name="com.jrms.summing.ui.spend.detail.quantity.SpendQuantityFragment"
+        android:label="@string/cost"
+        tools:layout="@layout/fragment_spend_quantity" >
+        <action
+            android:id="@+id/action_navigation_cost_spend_fragment_to_navigation_spend_description_fragment"
+            app:destination="@id/navigation_spend_description_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_spend_details_fragment"
+        android:name="com.jrms.summing.ui.spend.detail.SpendDetailFragment"
+        android:label="@string/spendDetails"
+        tools:layout="@layout/spend_detail_fragment">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_spend_description_fragment"
+        android:name="com.jrms.summing.ui.spend.detail.description.SpendDescriptionFragment"
+        android:label="@string/description"
+        tools:layout="@layout/fragment_spend_description"
+        >
+        <action
+            android:id="@+id/action_navigation_spend_description_fragment_to_navigation_spend_details_fragment"
+            app:destination="@id/navigation_spend_details_fragment" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/locationFragment"
         android:name="com.jrms.summing.ui.location.LocationFragment"
-        android:label="@string/setLocation"
-        tools:layout="@layout/add_spend_fragment" >
+        android:label="@string/setLocation">
         <argument
             android:name="latitude"
-            app:argType="string"
-            android:defaultValue="0.0" />
+            android:defaultValue="0.0"
+            app:argType="string" />
         <argument
             android:name="longitude"
-            app:argType="string"
-            android:defaultValue="0.0" />
+            android:defaultValue="0.0"
+            app:argType="string" />
         <argument
             android:name="type"
-            app:argType="boolean"
             android:defaultValue="true"
-            />
+            app:argType="boolean" />
     </fragment>
 </navigation>

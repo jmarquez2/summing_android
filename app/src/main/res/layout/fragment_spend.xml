@@ -8,12 +8,12 @@
     <data>
         <variable
             name="eventCalls"
-            type="com.jrms.summing.ui.spend.EventCalls" />
+            type="com.jrms.summing.ui.spend.list.EventCalls" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.spend.SpendFragment">
+        tools:context=".ui.spend.list.SpendListFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

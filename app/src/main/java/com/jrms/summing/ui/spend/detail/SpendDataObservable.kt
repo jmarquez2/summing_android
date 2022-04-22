@@ -1,4 +1,4 @@
-package com.jrms.summing.ui.addSpend
+package com.jrms.summing.ui.spend.detail
 
 import android.view.View
 import androidx.databinding.BaseObservable
@@ -6,7 +6,7 @@ import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 
 
-class AddSpendObservable(private val isTransportCall : (Int) -> Boolean) : BaseObservable() {
+class SpendDataObservable() : BaseObservable() {
 
     private var _canUseLocation : Boolean = false
     private var _cost : Double? = null
@@ -125,6 +125,10 @@ class AddSpendObservable(private val isTransportCall : (Int) -> Boolean) : BaseO
         }
     }
 
+    private fun isTransportCall(type : Int) : Boolean{
+        return type == 1
+    }
+
     @Bindable
     fun getIsTransport() : Boolean{
         return isTransportCall(_selectedType)
@@ -156,8 +160,9 @@ class AddSpendObservable(private val isTransportCall : (Int) -> Boolean) : BaseO
     }
 
     private fun validate(){
-        val valid = _cost ?: 0.0 > 0.0 && _description?.length ?: 0 > 0 && (
-                    if (isTransportCall(getSelectedType()))
+        val isTransport = isTransportCall(getSelectedType())
+        val valid = _cost ?: 0.0 > 0.0 && (if(isTransport) true else _description?.length ?: 0 > 0) && (
+                    if (isTransport)
                     _origin != null && _destination != null else true
                 )
         if(_isValid != valid) {

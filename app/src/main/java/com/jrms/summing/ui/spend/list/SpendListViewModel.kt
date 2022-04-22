@@ -1,4 +1,4 @@
-package com.jrms.summing.ui.spend
+package com.jrms.summing.ui.spend.list
 
 import android.app.Application
 import android.util.Log
@@ -8,19 +8,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jrms.summing.R
-import com.jrms.summing.models.ResponseWS
 import com.jrms.summing.models.Spend
 import com.jrms.summing.repositories.SpendRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.Exception
 
 
-class SpendViewModel(
+class SpendListViewModel(
     application: Application,
     private val spendRepository: SpendRepository,
 ) : AndroidViewModel(application) {
@@ -59,14 +53,14 @@ class SpendViewModel(
                 this.offset = 0
             }
 
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch{
 
                 try {
                     val result: List<Spend> = spendRepository.getSpendList(limit, offset)
                     if (result.count() > 0) {
                         spends.addAll(result)
                         spendListLiveData.postValue(spends)
-                        this@SpendViewModel.offset += this@SpendViewModel.limit
+                        this@SpendListViewModel.offset += this@SpendListViewModel.limit
                     }
                 } catch (e: Exception) {
                     Toast.makeText(getApplication(), R.string.errorMessageWS,

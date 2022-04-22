@@ -1,4 +1,4 @@
-package com.jrms.summing.ui.addSpend
+package com.jrms.summing.ui.spend.detail
 
 import android.app.Application
 import android.location.Location
@@ -6,21 +6,15 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jrms.summing.R
-import com.jrms.summing.models.ResponseWS
 import com.jrms.summing.models.Spend
 import com.jrms.summing.models.Transport
 import com.jrms.summing.repositories.SpendRepository
-import com.jrms.summing.repositories.WebServiceRepository
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.Exception
 
-class AddSpendViewModel(application: Application, private val spendRepository: SpendRepository )
+class SpendDataViewModel(application: Application, private val spendRepository: SpendRepository )
     : AndroidViewModel(application) {
 
     lateinit var openLocation : (Boolean) -> Unit
@@ -35,7 +29,7 @@ class AddSpendViewModel(application: Application, private val spendRepository: S
     var currentLocation : Location? = null
 
     val addSpendObservable by lazy {
-        AddSpendObservable(this@AddSpendViewModel::isTransportIndex).apply {
+        SpendDataObservable().apply {
             setDestinationText(getApplication<com.jrms.summing.Application>().getString(R.string.setDestination))
         }
     }
@@ -74,7 +68,7 @@ class AddSpendViewModel(application: Application, private val spendRepository: S
         val spend = Spend().apply {
             cost = addSpendObservable.getCost()!!
             description = addSpendObservable.getDescription()!!
-            if(isTransportIndex(addSpendObservable.getSelectedType())){
+            if(addSpendObservable.getIsTransport()){
                 transport = Transport().apply {
                     originLocationLatitude = addSpendObservable.getOriginLocation().first
                     originLocationLongitude = addSpendObservable.getOriginLocation().second
@@ -107,8 +101,5 @@ class AddSpendViewModel(application: Application, private val spendRepository: S
         openLocation(false)
     }
 
-    private fun isTransportIndex(index : Int) : Boolean{
-        return index == 1
-    }
 
 }

@@ -5,8 +5,8 @@ import com.jrms.summing.repositories.SessionRepository
 import com.jrms.summing.repositories.SharedPreferencesRepository
 import com.jrms.summing.repositories.SpendRepository
 import com.jrms.summing.repositories.WebServiceRepository
-import com.jrms.summing.ui.addSpend.AddSpendViewModel
-import com.jrms.summing.ui.spend.SpendViewModel
+import com.jrms.summing.ui.spend.detail.SpendDataViewModel
+import com.jrms.summing.ui.spend.list.SpendListViewModel
 import com.jrms.summing.ui.location.LocationViewModel
 import com.jrms.summing.ui.login.LoginViewModel
 import com.jrms.summing.viewmodel.MainActivityViewModel
@@ -16,8 +16,8 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 val module = module {
-    viewModel { AddSpendViewModel(get(), get()) }
-    viewModel { SpendViewModel(get(), get()) }
+    viewModel { SpendDataViewModel(get(), get()) }
+    viewModel { SpendListViewModel(get(), get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { LocationViewModel(get()) }
     viewModel { MainActivityViewModel(get()) }
