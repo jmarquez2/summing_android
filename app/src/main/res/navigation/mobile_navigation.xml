@@ -94,7 +94,7 @@
         android:label="@string/cost"
         tools:layout="@layout/fragment_spend_quantity" >
         <action
-            android:id="@+id/action_navigation_cost_spend_fragment_to_navigation_spend_description_fragment"
+            android:id="@+id/action_navigation_spend_cost_description"
             app:destination="@id/navigation_spend_description_fragment" />
     </fragment>
 
@@ -104,6 +104,9 @@
         android:label="@string/spendDetails"
         tools:layout="@layout/spend_detail_fragment">
 
+        <action
+            android:id="@+id/action_navigation_spend_details_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 
     <fragment
@@ -113,7 +116,7 @@
         tools:layout="@layout/fragment_spend_description"
         >
         <action
-            android:id="@+id/action_navigation_spend_description_fragment_to_navigation_spend_details_fragment"
+            android:id="@+id/action_navigation_spend_description_detail"
             app:destination="@id/navigation_spend_details_fragment" />
     </fragment>
 

@@ -23,6 +23,7 @@ class SpendTypeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+
         // Inflate the layout for this fragment
         val binding = FragmentSpendTypeBinding.inflate(inflater, container, false)
         binding.genericSpendButton.setOnClickListener(this::clickType)

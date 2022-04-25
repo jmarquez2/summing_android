@@ -9,10 +9,10 @@ object Converter {
     @JvmStatic
     @InverseMethod("stringToDouble")
     fun doubleToString(value : Double?) : String?{
-        try{
-            return DecimalFormat("#.##").format(value)
+        return try{
+            DecimalFormat("#.##").format(value)
         }catch (e : Exception){
-            return null
+            null
         }
 
     }

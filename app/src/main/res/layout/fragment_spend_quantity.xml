@@ -1,14 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".ui.spend.detail.quantity.SpendQuantityFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="cost fragment" />
+    <data>
 
-</FrameLayout>
+        <variable
+            name="viewModel"
+            type="com.jrms.summing.ui.spend.detail.SpendDataViewModel" />
+
+        <import type="com.jrms.summing.other.Converter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/spendCostTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="130dp"
+            android:text="@string/askSpendCost"
+            android:textColor="@color/textColor"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            app:layout_constraintTop_toBottomOf="@id/spendCostTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            android:textColor="?colorSecondaryVariant"
+            android:id="@+id/costEditText"
+            android:text="@={Converter.doubleToString(viewModel.addSpendObservable.cost)}"
+            android:layout_width="200dp"
+            android:inputType="numberDecimal"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/continueText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:enabled="@{viewModel.addSpendObservable.cost != null}"
+
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -9,9 +9,11 @@ import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
 import android.location.LocationManager.NETWORK_PROVIDER
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,6 +21,7 @@ import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.jrms.summing.R
@@ -28,12 +31,14 @@ import com.jrms.summing.other.LATITUDE_RESULT
 import com.jrms.summing.other.LOCATION_RESULT_DESTINATION
 import com.jrms.summing.other.LOCATION_RESULT_ORIGIN
 import com.jrms.summing.other.LONGITUDE_RESULT
-import org.koin.android.viewmodel.ext.android.viewModel
+import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import java.lang.Exception
 
 
-class SpendDetailFragment : Fragment(), LocationListener {
+class SpendDetailFragment : Fragment(), LocationListener, View.OnClickListener {
 
-    private val dataViewModel: SpendDataViewModel by viewModel()
+    private val dataViewModel: SpendDataViewModel by sharedViewModel()
 
 
     override fun onCreateView(
@@ -42,17 +47,12 @@ class SpendDetailFragment : Fragment(), LocationListener {
     ): View {
         val binding = SpendDetailFragmentBinding.inflate(inflater, container, false)
 
-        dataViewModel.openLocation = this::goToLocation
+        binding.buttonSaveSpend.setOnClickListener(this)
 
-        dataViewModel.returnToPrevious = {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("savedSpend", true)
-            findNavController().navigateUp()
-        }
+
 
         binding.viewModel = dataViewModel
-        binding.costValue.doOnTextChanged { _, _, _, _ ->
-            binding.costValue.setSelection(binding.costValue.text?.toString()?.length ?: 0)
-        }
+
         setFragmentResultListener(LOCATION_RESULT_ORIGIN) { _, bundle ->
             dataViewModel.setOriginLocation(
                 bundle.getDouble(LATITUDE_RESULT), bundle.getDouble(
@@ -69,12 +69,6 @@ class SpendDetailFragment : Fragment(), LocationListener {
         }
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
     }
 
     private fun getLocation(canGet: Boolean) {
@@ -131,6 +125,21 @@ class SpendDetailFragment : Fragment(), LocationListener {
             dataViewModel.currentLocation?.latitude ?: 0.0,
             dataViewModel.currentLocation?.longitude ?: 0.0
         )
+
+    }
+
+    override fun onClick(p0: View?) {
+        lifecycleScope.launch {
+            try {
+                val result = dataViewModel.saveSpend()
+                Log.d("Save spend", result.message ?: "Empty message")
+                Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_navigation_spend_details_home)
+            } catch (e: Exception) {
+                Log.e("Save spend", "Error", e)
+                Toast.makeText(context, R.string.cannotSaveSpen, Toast.LENGTH_SHORT).show()
+            }
+        }
 
     }
 

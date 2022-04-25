@@ -55,4 +55,8 @@
     <string name="askSpendType">Please select the spend type</string>
     <string name="generic">Generic</string>
     <string name="transport">Transport</string>
+    <string name="askSpendCost">Please set the spend cost</string>
+    <string name="accept">Accept</string>
+    <string name="continueText">Continue</string>
+    <string name="askDescription">Please set a description</string>
 </resources>
