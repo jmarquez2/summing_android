@@ -59,4 +59,11 @@
     <string name="accept">Accept</string>
     <string name="continueText">Continue</string>
     <string name="askDescription">Please set a description</string>
+
+    <string name="askOrigin">Which origin location would you like to choose?</string>
+    <string name="currentLocation">Current location</string>
+    <string name="fromMap">From map</string>
+
+    <string name="askDestination">Would you like to select a destination location?</string>
+
 </resources>

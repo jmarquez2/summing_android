@@ -161,10 +161,11 @@ class SpendDataObservable() : BaseObservable() {
 
     private fun validate(){
         val isTransport = isTransportCall(getSelectedType())
-        val valid = _cost ?: 0.0 > 0.0 && (if(isTransport) true else _description?.length ?: 0 > 0) && (
+        val valid =
+            (_cost ?: 0.0) > 0.0 && (if (isTransport) true else _description?.length ?: 0 > 0) && (
                     if (isTransport)
-                    _origin != null && _destination != null else true
-                )
+                        _origin != null && _destination != null else true
+                    )
         if(_isValid != valid) {
             _isValid = valid
             notifyPropertyChanged(com.jrms.summing.BR.isValid)

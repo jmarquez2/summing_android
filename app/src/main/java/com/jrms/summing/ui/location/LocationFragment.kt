@@ -9,33 +9,31 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.*
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.jrms.summing.R
-import com.jrms.summing.other.LATITUDE_RESULT
-import com.jrms.summing.other.LOCATION_RESULT_DESTINATION
-import com.jrms.summing.other.LOCATION_RESULT_ORIGIN
-import com.jrms.summing.other.LONGITUDE_RESULT
+import com.jrms.summing.other.*
+import com.jrms.summing.ui.spend.detail.SpendDataViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class LocationFragment : Fragment() {
 
     private var marker : Marker? = null
 
-    private val viewModel: LocationViewModel by viewModel()
+    private val args : LocationFragmentArgs by navArgs()
+    private val viewModel: SpendDataViewModel by sharedViewModel()
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.latitude = (arguments?.
-        getString("latitude"))?.toDouble() ?: 0.0
-        viewModel.longitude = (arguments?.getString("longitude"))?.toDouble() ?: 0.0
-        viewModel.origin = (arguments?.getBoolean("type") ?: true)
+
         return inflater.inflate(R.layout.location_fragment, container, false)
     }
 
@@ -45,7 +43,7 @@ class LocationFragment : Fragment() {
         childFragmentManager.beginTransaction().replace(R.id.mapLayout, map).commit()
         map.getMapAsync { m->
 
-            val latitudeLongitude = LatLng(viewModel.latitude, viewModel.longitude)
+            val latitudeLongitude = LatLng(args.latitude.toDouble(), args.longitude.toDouble())
             marker = m.addMarker(MarkerOptions().position(latitudeLongitude).
             title(requireContext().getString(R.string.selectLocation)))
 
@@ -59,15 +57,24 @@ class LocationFragment : Fragment() {
                     .setMessage(R.string.askUseLocation)
                     .setPositiveButton(R.string.yes) { _, _ ->
 
-                        setFragmentResult(
-                            if(viewModel.origin) LOCATION_RESULT_ORIGIN else
-                                LOCATION_RESULT_DESTINATION,
-                            bundleOf(
-                                LATITUDE_RESULT to latLan.latitude,
-                                LONGITUDE_RESULT to latLan.longitude
-                            )
-                        )
-                        findNavController().navigateUp()
+                        if(args.type == 1){
+                            viewModel.setOriginLocation(latLan.latitude, latLan.longitude)
+                            if(args.fromDetails){
+                                findNavController().navigateUp()
+                            }else{
+                                findNavController().navigate(R.id.navigation_destination_fragment)
+                            }
+
+                        }else{
+                            viewModel.setDestinationLocation(latLan.latitude, latLan.longitude)
+                            if(args.fromDetails){
+                                findNavController().navigateUp()
+                            }else{
+                                findNavController().navigate(R.id.navigation_cost_spend_fragment)
+                            }
+
+                        }
+
 
                     }
                     .setNegativeButton(R.string.no, null)

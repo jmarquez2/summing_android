@@ -7,7 +7,6 @@ import com.jrms.summing.repositories.SpendRepository
 import com.jrms.summing.repositories.WebServiceRepository
 import com.jrms.summing.ui.spend.detail.SpendDataViewModel
 import com.jrms.summing.ui.spend.list.SpendListViewModel
-import com.jrms.summing.ui.location.LocationViewModel
 import com.jrms.summing.ui.login.LoginViewModel
 import com.jrms.summing.viewmodel.MainActivityViewModel
 import org.koin.android.ext.koin.androidContext
@@ -19,7 +18,6 @@ val module = module {
     viewModel { SpendDataViewModel(get(), get()) }
     viewModel { SpendListViewModel(get(), get()) }
     viewModel { LoginViewModel(get()) }
-    viewModel { LocationViewModel(get()) }
     viewModel { MainActivityViewModel(get()) }
     single {SpendRepository(get(), get())}
     single { WebServiceRepository(get()) }

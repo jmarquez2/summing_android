@@ -11,6 +11,7 @@ import com.jrms.summing.R
 import com.jrms.summing.models.ResponseWS
 import com.jrms.summing.models.Spend
 import com.jrms.summing.models.Transport
+import com.jrms.summing.other.SpendType
 import com.jrms.summing.repositories.SpendRepository
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -33,7 +34,16 @@ class SpendDataViewModel(application: Application, private val spendRepository: 
     }
 
 
-
+    fun getType() : String{
+        return when(addSpendObservable.getSelectedType()){
+            SpendType.GENERAL.ordinal -> {
+                getApplication<Application>().getString(R.string.generic)
+            }
+            else -> {
+                getApplication<Application>().getString(R.string.transport)
+            }
+        }
+    }
 
     fun setOriginLocation(latitude: Double, longitude: Double) {
         addSpendObservable.setOriginText(Pair(latitude, longitude))

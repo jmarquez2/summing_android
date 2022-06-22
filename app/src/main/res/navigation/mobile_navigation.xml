@@ -35,14 +35,11 @@
         android:id="@+id/navigation_type_spend_fragment"
         android:name="com.jrms.summing.ui.spend.detail.type.SpendTypeFragment"
         android:label="@string/spend_type"
-        tools:layout="@layout/fragment_spend_type">
+        tools:layout="@layout/fragment_two_options_question">
         <action
             android:id="@+id/action_navigation_cost_spend_fragment"
             app:destination="@id/navigation_cost_spend_fragment" />
 
-        <action
-            android:id="@+id/action_navigation_ask_user_location_fragment"
-            app:destination="@id/navigation_ask_user_location_fragment" />
         <action
             android:id="@+id/action_navigation_origin_fragment"
             app:destination="@id/navigation_origin_fragment" />
@@ -53,40 +50,35 @@
     <fragment android:id="@+id/navigation_destination_fragment"
         android:name="com.jrms.summing.ui.spend.detail.location.DestinationLocationFragment"
         android:label="@string/destination"
-        tools:layout="@layout/fragment_destination_location"
+        tools:layout="@layout/fragment_two_options_question"
         >
         <action
-            android:id="@+id/action_navigation_destination_fragment_to_locationFragment"
+            android:id="@+id/action_navigation_destination_locationFragment"
             app:destination="@id/locationFragment" />
         <action
-            android:id="@+id/action_navigation_destination_fragment_to_navigation_cost_spend_fragment"
+            android:id="@+id/action_navigation_destination_cost_spend"
             app:destination="@id/navigation_cost_spend_fragment" />
     </fragment>
 
     <fragment android:id="@+id/navigation_origin_fragment"
         android:name="com.jrms.summing.ui.spend.detail.location.OriginLocationFragment"
         android:label="@string/origin"
-        tools:layout="@layout/fragment_origin_location"
+        tools:layout="@layout/fragment_two_options_question"
 
         >
         <action
-            android:id="@+id/action_navigation_origin_fragment_to_navigation_destination_fragment"
+            android:id="@+id/action_navigation_origin_destination"
             app:destination="@id/navigation_destination_fragment" />
         <action
-            android:id="@+id/action_navigation_origin_fragment_to_locationFragment"
+            android:id="@+id/action_navigation_origin_map_location"
             app:destination="@id/locationFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/navigation_ask_user_location_fragment"
-        android:label="@string/useLocation"
-        android:name="com.jrms.summing.ui.spend.detail.location.AskUseLocationFragment"
-        tools:layout="@layout/fragment_ask_use_location" >
-
         <action
-            android:id="@+id/action_navigation_ask_user_location_fragment_to_navigation_origin_fragment"
-            app:destination="@id/navigation_origin_fragment" />
+            android:id="@+id/action_navigation_origin_cost"
+            app:popUpTo="@id/navigation_type_spend_fragment"
+            app:destination="@id/navigation_cost_spend_fragment" />
     </fragment>
+
+
 
     <fragment
         android:id="@+id/navigation_cost_spend_fragment"
@@ -106,7 +98,11 @@
 
         <action
             android:id="@+id/action_navigation_spend_details_home"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/mobile_navigation"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            />
     </fragment>
 
     <fragment
@@ -135,7 +131,22 @@
             app:argType="string" />
         <argument
             android:name="type"
-            android:defaultValue="true"
-            app:argType="boolean" />
+            android:defaultValue="1"
+            app:argType="integer" />
+        <argument
+            android:name="fromDetails"
+            android:defaultValue="false"
+            app:argType="boolean"
+            />
+        <action
+            android:id="@+id/action_location_cost"
+            app:destination="@id/navigation_cost_spend_fragment"
+            app:popUpTo="@id/navigation_cost_spend_fragment"
+            />
+        <action
+            android:id="@+id/action_location_destination"
+            app:destination="@id/navigation_destination_fragment"
+            app:popUpTo="@id/navigation_destination_fragment"
+            />
     </fragment>
 </navigation>

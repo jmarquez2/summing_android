@@ -39,7 +39,7 @@
                                 android:textColor="@color/textColor"
                                 android:text="@string/cost"
                                 android:textStyle="bold"
-                                android:textSize="24sp"
+                                android:textSize="22sp"
                                 />
                             <TextView
                                 android:id="@+id/costValueTextView"
@@ -47,21 +47,46 @@
                                 android:layout_height="wrap_content"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                android:text="@{Converter.doubleToString(viewModel.addSpendObservable.cost)}"
-                                android:textSize="22sp"
+                                android:text="@{'$' + Converter.doubleToString(viewModel.addSpendObservable.cost)}"
+                                android:textSize="20sp"
                                 tools:text="456.00"
                                 />
+                            <TextView
+                                app:layout_constraintTop_toBottomOf="@id/costLabel"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:id="@+id/typeLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/textColor"
+                                android:text="@string/type"
+                                android:textStyle="bold"
+                                android:textSize="22sp"
+                                android:layout_marginTop="10dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/typeValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toBottomOf="@id/costValueTextView"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:text="@{viewModel.type}"
+                                android:textSize="20sp"
+                                android:layout_marginTop="10dp"
+                                tools:text="456.00"
+                                />
+
                             <TextView
                                 android:id="@+id/labelDescription"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/costLabel"
+                                app:layout_constraintTop_toBottomOf="@id/typeLabel"
                                 app:layout_constraintStart_toStartOf="parent"
                                 android:layout_marginTop="10dp"
                                 android:text="@string/description"
                                 android:textStyle="bold"
                                 android:textColor="@color/textColor"
-                                android:textSize="24sp"
+                                android:textSize="22sp"
                                 />
                             <TextView
                                 android:id="@+id/descriptionValue"
@@ -71,7 +96,7 @@
                                 android:layout_marginTop="10dp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 android:text="@{viewModel.addSpendObservable.description}"
-                                android:textSize="24sp"
+                                android:textSize="20sp"
                                 tools:text="test"
                                 />
                         </androidx.constraintlayout.widget.ConstraintLayout>

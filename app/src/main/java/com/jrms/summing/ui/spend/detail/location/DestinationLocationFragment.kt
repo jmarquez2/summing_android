@@ -1,60 +1,34 @@
 package com.jrms.summing.ui.spend.detail.location
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.jrms.summing.R
+import com.jrms.summing.other.SpendType
+import com.jrms.summing.ui.spend.detail.SpendDataViewModel
+import com.jrms.summing.ui.spend.detail.TwoOptionsQuestionFragment
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class DestinationLocationFragment : TwoOptionsQuestionFragment(
+    R.string.askDestination,
+    R.string.yes,
+    R.string.no
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DestinationLocationFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class DestinationLocationFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+)
+
+{
+
+    private val viewModel by sharedViewModel<SpendDataViewModel>()
+
+    override fun optionOneClick() {
+        val action = DestinationLocationFragmentDirections.
+        actionNavigationDestinationLocationFragment((viewModel.currentLocation?.latitude ?:
+        0.0).toString(),
+            (viewModel.currentLocation?.longitude ?: 0.0).toString(), 0, false)
+        findNavController().navigate(action)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_destination_location, container, false)
+    override fun optionTwoClick() {
+        findNavController().navigate(R.id.action_navigation_destination_cost_spend)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DestinationLocationFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DestinationLocationFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }
