@@ -66,4 +66,10 @@
 
     <string name="askDestination">Would you like to select a destination location?</string>
 
+    <string name="urlGoogleAuth">https://accounts.google.com/o/oauth2/auth</string>
+    <string name="urlGoogleToken">https://oauth2.googleapis.com/token</string>
+    <string name="schemeNameRedirect">https</string>
+    <string name="hostRedirect">www.google.com</string>
+
+
 </resources>
